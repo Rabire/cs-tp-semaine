@@ -1,6 +1,7 @@
 # Start
 
 ```bash
+docker-compose up
 dotnet run
 ```
 
