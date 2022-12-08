@@ -1,5 +1,4 @@
-﻿using Database;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Api.Context
 {
@@ -9,7 +8,7 @@ namespace Api.Context
         {
         }
 
-        public DbSet<Hero> Heroes { get; set; }
+        public DbSet<Game> Games { get; set; }
 
     }
 }
