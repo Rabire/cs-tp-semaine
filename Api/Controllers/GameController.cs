@@ -8,24 +8,43 @@ namespace Api.Controllers
     {
         private static List<Game> games = new List<Game>
         {
-            new Game { Id = 1, GameTime = DateTime.Now, PlayerMove = Move.Paper, ComputerMove = Move.Rock, Result = Result.Win },
-            new Game { Id = 2, GameTime = DateTime.Now, PlayerMove = Move.Paper, ComputerMove = Move.Scissors, Result = Result.Loose }
+            new Game { Id = 1, Result = Result.Draw }
+        };
+
+        private static List<Round> rounds = new List<Round>
+        {
+            new Round { Id = 1, GameId = 1, GameTime = DateTime.Now, PlayerMove = Move.Paper, ComputerMove = Move.Rock, Result = Result.Win },
+            new Round { Id = 2, GameId = 1, GameTime = DateTime.Now, PlayerMove = Move.Paper, ComputerMove = Move.Scissors, Result = Result.Loose },
+            new Round { Id = 3, GameId = 1, GameTime = DateTime.Now, PlayerMove = Move.Scissors, ComputerMove = Move.Scissors, Result = Result.Draw }
         };
 
         [HttpPost]
-        [Route("Play")]
-        public async Task<ActionResult<List<Game>>> PlayGame([FromBody] Move playerMove)
+        [Route("NewGame")]
+        public async Task<ActionResult<List<Game>>> CreateGame([FromBody] Move playerMove)
         {
+            Game newGame = new Game { Id = games.Last().Id + 1 };
+
+            return Ok(newGame);
+        }
+
+        [HttpPost]
+        [Route("Play")]
+        public async Task<ActionResult<List<Game>>> Play([FromBody] PlayRound body)
+        {
+            Game currentGame = games.Find(g => g.Id == body.GameId);
+
+            Console.WriteLine(currentGame);
+
             Random random = new();
             Move computerMove = (Move)random.Next(3);
 
-            Result gameResult = getResult(playerMove, computerMove);
+            Result gameResult = getResult(body.playerMove, computerMove);
 
-            Game game = new Game { PlayerMove = playerMove, ComputerMove = computerMove, Result = gameResult };
+            Round round = new Round { Id = rounds.Last().Id + 1, GameId = body.GameId, PlayerMove = body.playerMove, ComputerMove = computerMove, Result = gameResult };
 
-            games.Add(game);
+            rounds.Add(round);
 
-            return Ok(games);
+            return Ok(currentGame);
         }
 
         private Result getResult(Move playerMove, Move computerMove)
@@ -42,7 +61,6 @@ namespace Api.Controllers
                     return Result.Win;
                 default:
                     return Result.Draw;
-
             }
         }
     }

@@ -9,3 +9,5 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
     ports:
       - 3306:3306
+  api:
+    build: ./Api

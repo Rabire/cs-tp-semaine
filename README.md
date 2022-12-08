@@ -1,8 +1,9 @@
 # Start
 
+create the DB and run the api server
+
 ```bash
 docker-compose up
-dotnet run
 ```
 
-Navigate to http://localhost:5063/swagger/index.html to see the routes
+Navigate to http://localhost:7197/swagger/index.html to see the routes

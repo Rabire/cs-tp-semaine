@@ -9,6 +9,7 @@ namespace Api.Context
         }
 
         public DbSet<Game> Games { get; set; }
+        public DbSet<Round> Rounds { get; set; }
 
     }
 }
